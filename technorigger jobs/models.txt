@@ -1,0 +1,44 @@
+class Jobs:
+    title = CharField(max_length=100, null=False)
+    category = CharField(max_length=100)
+    post = CharField(max_length=10000)
+    required_skills = ManyToManyField(Skills)
+    required_experience = IntegerField(blank=True, null=True)
+    location = ForeignKey(Locations, on_delete=models.SET_NULL, related_name='company', null=True)
+    company = ForeignKey(Company, on_delete=models.SET_NULL, related_name='company', null=True)
+    date = DateTimeField(auto_now_add=True, blank=True)
+    job_id = CharField(max_length=100, null=False, blank=False)
+    job_url = CharField(max_length=1000, null=False, blank=False)
+    reviewed = BooleanField(default=False)
+    available = BooleanField(default=True)
+
+
+    unique_together = ('job_id', 'company')
+
+
+class JobsStats:
+    total_available = IntegerField()
+    total_unavailable = IntegerField()
+    date = DateTimeField(auto_now_add=True, blank=True)
+    
+everytime a new job is listed total_available in JobsStats should be incremented and if a job is unlisted total_unavailable should be decremeneted
+    
+In Jobs Table required_skills and required_experience can be null while scrapping rest all the fields should be filled
+
+class Skills:
+    name = CharField(max_length=100, null=False)
+    
+class Locations:
+    city = CharField(max_length=50)
+    country = CharField(max_length=50)
+    country_code_iso2 = CharField(max_length=7)
+    country_code_iso3 = CharField(max_length=7)
+
+    unique_together = ('city', 'country',)
+    
+class Company:
+    name = CharField(max_length=100, unique=True)
+    career_page = URLField()
+    job_openings = IntegerField(default=0)
+    logo = ImageField()
+
