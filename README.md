@@ -1,3 +1,3 @@
 # Technorigger-assignment
 
-The files contains the main.py file and the database created for the internship.
+The files contains the scraped.py file and the database created for the internship.
